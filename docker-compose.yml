@@ -2,7 +2,7 @@ version: "3.7"
 services:
   website:
     build: .
-    image: gokhanwell-front
+    image: gokhanwell/frontend:1.0.7
     platform: linux/amd64
     ports:
       - "3000:80"

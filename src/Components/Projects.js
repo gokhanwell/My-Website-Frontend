@@ -1,9 +1,9 @@
-import { React, useState, useEffect } from 'react'
+import {React, useState,  useEffect} from 'react'
 import ProjectCard from './ProjectCard';
 import './Projects.css'
 
 function Projects() {
-  const query = `query{
+    const query = `query{
         allProjects{
           id
           image
@@ -12,37 +12,35 @@ function Projects() {
           demoLink
         }
       }`
+    
+    const [projects,setProjects] = useState([])
 
-  const [projects, setProjects] = useState([])
+      useEffect(() => {
+        const sendingPost = {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({query}),
+        };
 
-  useEffect(() => {
-    const sendingPost = {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ query }),
-    };
+         fetch('https:///api.gokhanyardimci.com/graphql', sendingPost)
+            .then(response => response.json())
+            .then(data => setProjects(data.data.allProjects));
+    },[query])
 
-    fetch('https:///api.gokhanyardimci.com/graphql', sendingPost)
-      .then(response => response.json())
-      .then(data => setProjects(data.data.allProjects));
-  }, [query])
-
-  return (
+    return (
     <div className='projects' id='projects'>
-      <p>Projects</p>
-      <div className='projects-container'>
+        <p>My Certifications</p>
+        <div className='projects-container'>
         {projects.map((project) =>
-          <ProjectCard
-            key={project.id}
-            image={"https://api.gokhanyardimci.com/media/" + project.image}
-            description={project.projectDescription}
-            codelink={project.codeLink}
-            demolink={project.demoLink}
-          />
-        )}
-      </div>
-    </div>
-  )
+                <ProjectCard
+                    key={project.id}
+                    image={"https://api.gokhanyardimci.com/media/"+project.image}
+                    description={project.projectDescription}
+                    codelink={project.codeLink}                />
+            )}
+        </div>
+        </div>
+    )
 }
 
 export default Projects
